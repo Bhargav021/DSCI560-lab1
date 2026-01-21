@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CleanML Presentation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <style>
+        :root {
+            --primary-color: #4ECDC4;
+            --secondary-color: #FFE66D;
+            --accent-color: #FF6B6B;
+            --success-color: #95E1D3;
+        }
+
+        .reveal {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .reveal .slides {
+            text-align: left;
+        }
+        
+        .reveal h1 {
+            font-size: 2.8em;
+            color: var(--primary-color);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.7);
+            margin-bottom: 0.3em;
+        }
+        
+        .reveal h2 {
+            font-size: 1.8em;
+            color: var(--secondary-color);
+            margin-bottom: 0.4em;
+            text-align: center;
+        }
+        
+        .reveal h3 {
+            font-size: 1.4em;
+            color: var(--accent-color);
+            margin: 0.5em 0 0.3em 0;
+        }
+
+        .reveal section {
+            height: 100%;
+            padding: 20px 40px;
+            overflow: hidden;
+        }
+
+        .reveal .scrollable {
+            max-height: 900px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 20px;
+        }
+        
+        .reveal .auto-scroll {
+            max-height: 950px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 15px;
+        }
+
+        .reveal .scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .reveal .scrollable::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        .reveal .scrollable::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 10px;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .reveal ul {
+            margin-left: 40px;
+            line-height: 1.5;
+        }
+        
+        .reveal li {
+            margin: 12px 0;
+            font-size: 1.1em;
+        }
+        
+        .highlight {
+            background: linear-gradient(120deg, var(--primary-color) 0%, #44A08D 100%);
+            padding: 4px 12px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .box {
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 6px solid var(--primary-color);
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        
+        .columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .columns-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .impact-p { color: var(--primary-color); font-weight: bold; }
+        .impact-s { color: var(--secondary-color); font-weight: bold; }
+        .impact-n { color: var(--accent-color); font-weight: bold; }
+        
+        .big-number {
+            font-size: 4em;
+            font-weight: bold;
+            color: var(--primary-color);
+            line-height: 1;
+            display: block;
+            margin: 10px 0;
+        }
+        
+        .quote {
+            font-style: italic;
+            font-size: 1.4em;
+            color: var(--secondary-color);
+            border-left: 6px solid var(--secondary-color);
+            padding-left: 20px;
+            margin: 25px 0;
+        }
+        
+        svg {
+            display: block;
+            margin: 30px auto;
+        }
+        
+        table {
+            font-size: 0.9em;
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        table th {
+            background: var(--primary-color);
+            color: white;
+            padding: 10px;
+            font-size: 1em;
+        }
+        
+        table td {
+            padding: 8px 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        table tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .small-text {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid var(--primary-color);
+        }
+
+        .box-green { border-left-color: var(--primary-color); }
+        .box-yellow { border-left-color: var(--secondary-color); }
+        .box-red { border-left-color: var(--accent-color); }
+        .box-success { border-left-color: var(--success-color); }
+    </style>
+</head>
+<body>
+    <div class="reveal">
+        <div class="slides">
+            
+            <!-- Slide 1: Title & Big Question -->
+            <section data-transition="fade">
+                <div class="center" style="margin-top: 80px;">
+                    <h1>CleanML</h1>
+                    <h2 style="margin-top: 15px;">A Study for Evaluating the Impact of
+Data Cleaning on ML Classification Tasks</h2>
+                    <p style="font-size: 1.3em; margin-top: 30px; color: var(--success-color);">Peng Li et al.</p>
+                </div>
+                
+                <div class="fragment fade-up" style="margin-top: 40px;">
+                    <h3>Core Question</h3>
+                    <ul>
+                        <li class="fragment">Data cleaning is <span class="highlight">expensive</span> and <span class="highlight">ubiquitous</span></li>
+                        <li class="fragment">But does cleaning actually improve ML accuracy — and when?</li>
+                    </ul>
+                </div>
+                
+                <div class="box fragment fade-up" style="margin-top: 30px; font-size: 1.2em;">
+                    <strong>Contribution:</strong> First systematic, statistically rigorous study of cleaning → ML impact
+                </div>
+                
+                <div class="center fragment fade-up" style="margin-top: 30px;">
+                    <p style="font-size: 1em; opacity: 0.8;">
+                        <a href="https://github.com/chu-data-lab/CleanML" style="color: var(--primary-color); text-decoration: none;">github.com/chu-data-lab/CleanML</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Slide 2: Why This Study Is Needed -->
+            <section data-transition="fade">
+                <h2>Why This Study Is Needed</h2>
+                
+                <div class="columns" style="margin-top: 30px;">
+                    <div class="fragment fade-right">
+                        <h3>Two Disconnected Perspectives</h3>
+                        <div class="box box-green">
+                            <strong style="font-size: 1.1em;">ML Community:</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Build noise-robust models</li>
+                                <li>Often skip cleaning</li>
+                            </ul>
+                        </div>
+                        <div class="box box-yellow" style="margin-top: 15px;">
+                            <strong style="font-size: 1.1em;">Database Community:</strong>
+                            <ul style="margin-top: 10px;">
+                                <li>Clean data without ML feedback</li>
+                                <li>Focus on data quality alone</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="fragment fade-left">
+                        <h3>The Problem</h3>
+                        <p style="font-size: 1.1em; margin-bottom: 20px;">No large-scale evidence on:</p>
+                        <ul>
+                            <li class="fragment">Which <strong>errors</strong> matter?</li>
+                            <li class="fragment">Which <strong>cleaning</strong> helps?</li>
+                            <li class="fragment">Which <strong>models</strong> benefit?</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="box fragment grow" style="text-align: center; margin-top: 40px; font-size: 1.2em; border-left-color: var(--accent-color);">
+                    <strong>Goal: Bridge data cleaning and downstream ML performance</strong>
+                </div>
+            </section>
+
+            <!-- Slide 3: CleanML at a Glance -->
+            <section data-transition="fade">
+                <h2>CleanML at a Glance</h2>
+                
+                <div class="grid-stats" style="margin-top: 30px;">
+                    <div class="stat-card fragment">
+                        <span class="big-number">14</span>
+                        <p style="font-size: 1.2em; margin-top: 10px;">Real-world datasets</p>
+                    </div>
+                    <div class="stat-card fragment">
+                        <span class="big-number">5</span>
+                        <p style="font-size: 1.2em; margin-top: 10px;">Error types</p>
+                    </div>
+                    <div class="stat-card fragment">
+                        <span class="big-number">7</span>
+                        <p style="font-size: 1.2em; margin-top: 10px;">ML models</p>
+                    </div>
+                </div>
+
+                <div class="columns" style="margin-top: 30px;">
+                    <div class="fragment">
+                        <ul style="font-size: 1em;">
+                            <li>Multiple cleaning methods per error type</li>
+                            <li>Training & deployment scenarios</li>
+                        </ul>
+                    </div>
+                    <div class="fragment">
+                        <ul style="font-size: 1em;">
+                            <li>Statistical hypothesis testing</li>
+                            <li>False discovery control (BY procedure)</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="box fragment fade-up" style="margin-top: 30px; font-size: 1.1em;">
+                    <h3 style="margin-top: 0;">Key Design Choice</h3>
+                    <p>Use <span class="highlight">real errors</span>, not synthetic noise</p>
+                    <p class="small-text" style="margin-top: 10px;">Why? Synthetic errors may under/over-estimate cleaning impact</p>
+                </div>
+            </section>
+
+            <!-- Slide 4: Error Types & Cleaning Methods -->
+            <section>
+                <section data-transition="fade">
+                    <h2 style="font-size: 1.6em; margin-bottom: 0.2em;">Error Types & Cleaning Methods</h2>
+                    
+                    <div class="columns" style="margin-top: 15px; gap: 20px;">
+                        <div>
+                            <h3 style="font-size: 1.2em; margin-bottom: 0.3em; color: #FF6B6B;">5 Error Types</h3>
+                            <div class="box box-green" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">1. Missing Values</strong>
+                                <p style="font-size: 0.75em; margin: 3px 0 0 0; opacity: 0.9;">No value stored for cells</p>
+                            </div>
+                            <div class="box box-yellow" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">2. Outliers</strong>
+                                <p style="font-size: 0.75em; margin: 3px 0 0 0; opacity: 0.9;">Observations distant from others</p>
+                            </div>
+                            <div class="box box-red" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">3. Duplicates</strong>
+                                <p style="font-size: 0.75em; margin: 3px 0 0 0; opacity: 0.9;">Multiple records, same entity</p>
+                            </div>
+                            <div class="box box-success" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">4. Inconsistencies</strong>
+                                <p style="font-size: 0.75em; margin: 3px 0 0 0; opacity: 0.9;">Different values, same meaning (CA vs California)</p>
+                            </div>
+                            <div class="box box-green" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">5. Mislabels</strong>
+                                <p style="font-size: 0.75em; margin: 3px 0 0 0; opacity: 0.9;">Incorrectly labeled examples</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3>Cleaning Spectrum</h3>
+                            <div class="box box-yellow">
+                                <strong style="font-size: 1.1em;">Simple Methods:</strong>
+                                <ul style="margin-top: 10px; font-size: 0.95em;">
+                                    <li>Mean/Median/Mode imputation</li>
+                                    <li>Record deletion</li>
+                                    <li>Standard deviation detection</li>
+                                    <li>IQR detection</li>
+                                </ul>
+                            </div>
+                            <div class="box box-green" style="padding: 8px 12px; margin: 8px 0;">
+                                <strong style="font-size: 0.95em;">Advanced Methods:</strong>
+                                <ul style="margin: 5px 0 0 20px; font-size: 0.8em; line-height: 1.4;">
+                                    <li style="margin: 4px 0;"><strong>HoloClean</strong> - Probabilistic inference</li>
+                                    <li style="margin: 4px 0;"><strong>ZeroER</strong> - Unsupervised entity resolution</li>
+                                    <li style="margin: 4px 0;"><strong>cleanlab</strong> - Confident learning</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 25px; text-align: center;">
+                        <p style="font-size: 0.85em; color: var(--secondary-color);">↓ Press down for key insight</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Comparing Cleaning Methods</h2>
+                    <div style="margin-top: 100px;">
+                        <div class="box" style="text-align: center; font-size: 1.4em; padding: 40px;">
+                            <strong>Key Idea:</strong> Compare simple vs. state-of-the-art under <span class="highlight">identical ML settings</span>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 5: ML Workflow Diagram -->
+            <section data-transition="fade">
+                <h2>ML Workflow with Cleaning</h2>
+                
+                <svg viewBox="0 0 1000 700" width="1000" height="700">
+                    <!-- Dirty Data -->
+                    <g class="fragment fade-in" data-fragment-index="0">
+                        <rect x="350" y="50" width="300" height="100" fill="#FF6B6B" stroke="#fff" stroke-width="4" rx="15"/>
+                        <text x="500" y="110" text-anchor="middle" fill="#fff" font-size="32" font-weight="bold">Dirty Data</text>
+                    </g>
+                    
+                    <!-- Arrow 1 -->
+                    <g class="fragment fade-in" data-fragment-index="1">
+                        <line x1="500" y1="150" x2="500" y2="210" stroke="#4ECDC4" stroke-width="5"/>
+                        <polygon points="500,220 490,200 510,200" fill="#4ECDC4"/>
+                    </g>
+                    
+                    <!-- Data Cleaning -->
+                    <g class="fragment fade-in" data-fragment-index="1">
+                        <rect x="350" y="220" width="300" height="100" fill="#4ECDC4" stroke="#fff" stroke-width="4" rx="15"/>
+                        <text x="500" y="280" text-anchor="middle" fill="#fff" font-size="32" font-weight="bold">Data Cleaning</text>
+                    </g>
+                    
+                    <!-- Arrow 2 -->
+                    <g class="fragment fade-in" data-fragment-index="2">
+                        <line x1="500" y1="320" x2="500" y2="380" stroke="#4ECDC4" stroke-width="5"/>
+                        <polygon points="500,390 490,370 510,370" fill="#4ECDC4"/>
+                    </g>
+                    
+                    <!-- Model Training -->
+                    <g class="fragment fade-in" data-fragment-index="2">
+                        <rect x="350" y="390" width="300" height="100" fill="#FFE66D" stroke="#fff" stroke-width="4" rx="15"/>
+                        <text x="500" y="450" text-anchor="middle" fill="#333" font-size="32" font-weight="bold">Model Training</text>
+                    </g>
+                    
+                    <!-- Arrow 3 -->
+                    <g class="fragment fade-in" data-fragment-index="3">
+                        <line x1="500" y1="490" x2="500" y2="550" stroke="#4ECDC4" stroke-width="5"/>
+                        <polygon points="500,560 490,540 510,540" fill="#4ECDC4"/>
+                    </g>
+                    
+                    <!-- Evaluation -->
+                    <g class="fragment fade-in" data-fragment-index="3">
+                        <rect x="350" y="560" width="300" height="100" fill="#95E1D3" stroke="#fff" stroke-width="4" rx="15"/>
+                        <text x="500" y="620" text-anchor="middle" fill="#333" font-size="32" font-weight="bold">Evaluation</text>
+                    </g>
+                    
+                    <!-- Annotations -->
+                    <g class="fragment fade-in" data-fragment-index="4">
+                        <rect x="50" y="200" width="250" height="120" fill="rgba(78,205,196,0.2)" stroke="#4ECDC4" stroke-width="3" rx="10"/>
+                        <text x="175" y="240" text-anchor="middle" fill="#4ECDC4" font-size="24" font-weight="bold">Path 1:</text>
+                        <text x="175" y="270" text-anchor="middle" fill="#fff" font-size="20">Clean training data</text>
+                        <text x="175" y="300" text-anchor="middle" fill="#fff" font-size="20">→ Better model?</text>
+                        
+                        <rect x="700" y="200" width="250" height="120" fill="rgba(255,230,109,0.2)" stroke="#FFE66D" stroke-width="3" rx="10"/>
+                        <text x="825" y="240" text-anchor="middle" fill="#FFE66D" font-size="24" font-weight="bold">Path 2:</text>
+                        <text x="825" y="270" text-anchor="middle" fill="#fff" font-size="20">Clean test data</text>
+                        <text x="825" y="300" text-anchor="middle" fill="#fff" font-size="20">→ Better predictions?</text>
+                    </g>
+                </svg>
+                
+                <div class="box fragment fade-up" style="margin-top: 40px; font-size: 1.5em;">
+                    <strong>Insight:</strong> Cleaning <span class="highlight">location</span> matters as much as cleaning <span class="highlight">method</span>
+                </div>
+            </section>
+
+            <!-- Slide 6: ML Models & Experimental Control -->
+            <section>
+                <section data-transition="fade">
+                    <h2>ML Models & Experimental Control</h2>
+                    
+                    <div class="columns" style="margin-top: 30px;">
+                        <div>
+                            <h3>7 Models Tested</h3>
+                            <ul style="font-size: 1em; margin-top: 15px;">
+                                <li class="fragment">Logistic Regression</li>
+                                <li class="fragment">Decision Tree</li>
+                                <li class="fragment">Random Forest</li>
+                                <li class="fragment">AdaBoost</li>
+                                <li class="fragment">XGBoost</li>
+                                <li class="fragment">K-Nearest Neighbors</li>
+                                <li class="fragment">Naive Bayes</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3>Statistical Rigor</h3>
+                            <div class="box fragment" style="text-align: center;">
+                                <span class="big-number" style="font-size: 3.5em;">20</span>
+                                <p style="font-size: 1.1em; margin-top: 10px;">Random splits per experiment</p>
+                            </div>
+                            <div class="fragment" style="margin-top: 20px;">
+                                <ul style="font-size: 1em;">
+                                    <li>Paired sample t-test</li>
+                                    <li>BY procedure for false discovery control</li>
+                                    <li>Significance level α = 0.05</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for outcome labels</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Outcome Labels</h2>
+                    <div class="columns-3" style="margin-top: 40px;">
+                        <div class="box box-green" style="text-align: center; padding: 25px;">
+                            <span class="impact-p" style="font-size: 2.5em;">P</span>
+                            <p style="font-size: 1.1em; margin-top: 10px;">Positive Impact<br>(Helps)</p>
+                        </div>
+                        <div class="box box-yellow" style="text-align: center; padding: 25px;">
+                            <span class="impact-s" style="font-size: 2.5em;">S</span>
+                            <p style="font-size: 1.1em; margin-top: 10px;">Statistically<br>Insignificant</p>
+                        </div>
+                        <div class="box box-red" style="text-align: center; padding: 25px;">
+                            <span class="impact-n" style="font-size: 2.5em;">N</span>
+                            <p style="font-size: 1.1em; margin-top: 10px;">Negative Impact<br>(Hurts)</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 7: CleanML Database -->
+            <section>
+                <section data-transition="fade">
+                    <h2>CleanML Database Architecture</h2>
+                    
+                    <svg viewBox="0 0 1100 650" width="1100" height="650">
+                        <!-- Database table -->
+                        <g class="fragment fade-in" data-fragment-index="0">
+                            <rect x="50" y="50" width="1000" height="500" fill="rgba(255,255,255,0.1)" stroke="#4ECDC4" stroke-width="4" rx="15"/>
+                            
+                            <!-- Header -->
+                            <rect x="50" y="50" width="1000" height="80" fill="#4ECDC4" rx="15 15 0 0"/>
+                            <text x="550" y="105" text-anchor="middle" fill="#fff" font-size="32" font-weight="bold">CleanML Experiment Database</text>
+                        </g>
+                        
+                        <!-- Column Headers -->
+                        <g class="fragment fade-in" data-fragment-index="1">
+                            <text x="120" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Dataset</text>
+                            <text x="280" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Error</text>
+                            <text x="450" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Cleaning</text>
+                            <text x="650" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Model</text>
+                            <text x="830" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Scenario</text>
+                            <text x="970" y="180" fill="#FFE66D" font-size="22" font-weight="bold">Impact</text>
+                        </g>
+                        
+                        <!-- Sample rows -->
+                        <g class="fragment fade-in" data-fragment-index="2">
+                            <text x="120" y="230" fill="#fff" font-size="20">EEG</text>
+                            <text x="280" y="230" fill="#fff" font-size="20">Outliers</text>
+                            <text x="450" y="230" fill="#fff" font-size="20">IQR+Mean</text>
+                            <text x="650" y="230" fill="#fff" font-size="20">LogReg</text>
+                            <text x="830" y="230" fill="#fff" font-size="20">BD</text>
+                            <text x="970" y="230" fill="#4ECDC4" font-size="26" font-weight="bold">P</text>
+                        </g>
+                        
+                        <g class="fragment fade-in" data-fragment-index="3">
+                            <text x="120" y="280" fill="#fff" font-size="20">Credit</text>
+                            <text x="280" y="280" fill="#fff" font-size="20">Missing</text>
+                            <text x="450" y="280" fill="#fff" font-size="20">Median</text>
+                            <text x="650" y="280" fill="#fff" font-size="20">XGBoost</text>
+                            <text x="830" y="280" fill="#fff" font-size="20">CD</text>
+                            <text x="970" y="280" fill="#FFE66D" font-size="26" font-weight="bold">S</text>
+                        </g>
+                        
+                        <g class="fragment fade-in" data-fragment-index="4">
+                            <text x="120" y="330" fill="#fff" font-size="20">Movie</text>
+                            <text x="280" y="330" fill="#fff" font-size="20">Duplicates</text>
+                            <text x="450" y="330" fill="#fff" font-size="20">ZeroER</text>
+                            <text x="650" y="330" fill="#fff" font-size="20">RandomF</text>
+                            <text x="830" y="330" fill="#fff" font-size="20">BD</text>
+                            <text x="970" y="330" fill="#FF6B6B" font-size="26" font-weight="bold">N</text>
+                        </g>
+                        
+                        <!-- SQL query -->
+                        <g class="fragment fade-in" data-fragment-index="5">
+                            <rect x="150" y="400" width="800" height="120" fill="rgba(78, 205, 196, 0.2)" stroke="#4ECDC4" stroke-width="3" rx="10"/>
+                            <text x="550" y="440" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">SELECT error_type, impact, COUNT(*)</text>
+                            <text x="550" y="470" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">FROM CleanML</text>
+                            <text x="550" y="500" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">GROUP BY error_type, impact</text>
+                        </g>
+                    </svg>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down to see why this matters</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Why This Matters</h2>
+                    <div style="margin-top: 60px;">
+                        <div class="box box-green" style="font-size: 1.3em; margin-bottom: 30px;">
+                            <h3 style="margin-top: 0; color: var(--primary-color);">SQL-Style Analysis</h3>
+                            <p>Query thousands of experiments across multiple dimensions</p>
+                        </div>
+                        
+                        <div class="box box-yellow" style="font-size: 1.3em; margin-bottom: 30px;">
+                            <h3 style="margin-top: 0; color: var(--secondary-color);">Fair Comparison</h3>
+                            <p>Controlled variables ensure apples-to-apples evaluation</p>
+                        </div>
+                        
+                        <div class="box box-success" style="font-size: 1.3em;">
+                            <h3 style="margin-top: 0; color: var(--success-color);">Reproducible Framework</h3>
+                            <p>Extensible design for future cleaning methods and datasets</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 8: Key Results -->
+            <section>
+                <section data-transition="fade">
+                    <h2>Key Results: What Helps vs. What Doesn't</h2>
+                    
+                    <div class="columns" style="margin-top: 30px;">
+                        <div>
+                            <div class="box box-green">
+                                <h3 style="color: #4ECDC4; margin-top: 0; font-size: 1.2em;">Often Helpful</h3>
+                                <ul style="font-size: 1em;">
+                                    <li><strong>Missing value imputation</strong><br>
+                                    <span class="small-text">49% positive impact</span></li>
+                                    <li style="margin-top: 12px;"><strong>Mislabel cleaning</strong><br>
+                                    <span class="small-text">47% positive, especially for boosting</span></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="box box-yellow" style="margin-top: 15px;">
+                                <h3 style="margin-top: 0; font-size: 1.2em;">Mostly Insignificant ~</h3>
+                                <ul style="font-size: 1em;">
+                                    <li><strong>Outlier cleaning</strong><br>
+                                    <span class="small-text">61% insignificant, 31% positive</span></li>
+                                    <li style="margin-top: 12px;"><strong>Inconsistency fixing</strong><br>
+                                    <span class="small-text">88% insignificant, 12% positive</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="box box-red">
+                                <h3 style="color: #FF6B6B; margin-top: 0; font-size: 1.2em;">Often Harmful</h3>
+                                <ul style="font-size: 1em;">
+                                    <li><strong>Duplicate removal</strong><br>
+                                    <span class="small-text">22% negative impact</span></li>
+                                    <li style="margin-top: 12px;"><strong>Why?</strong><br>
+                                    <span class="small-text">False positives delete useful training data</span></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="box box-yellow" style="margin-top: 15px;">
+                                <h3 style="margin-top: 0; font-size: 1.2em;">Core Pattern</h3>
+                                <p style="font-size: 1.1em;">Cleaning impact is <span class="highlight">error-specific</span>, not universal</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for detailed breakdown</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Impact by Error Type</h2>
+                    
+                    <table style="margin-top: 60px; font-size: 1em;">
+                        <thead>
+                            <tr>
+                                <th>Error Type</th>
+                                <th class="impact-p">Positive</th>
+                                <th class="impact-s">Insignificant</th>
+                                <th class="impact-n">Negative</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Missing Values</strong></td><td class="impact-p">49%</td><td class="impact-s">27%</td><td class="impact-n">24%</td></tr>
+                            <tr><td><strong>Outliers</strong></td><td class="impact-p">31%</td><td class="impact-s">61%</td><td class="impact-n">8%</td></tr>
+                            <tr><td><strong>Mislabels</strong></td><td class="impact-p">47%</td><td class="impact-s">38%</td><td class="impact-n">15%</td></tr>
+                            <tr><td><strong>Inconsistencies</strong></td><td class="impact-p">12%</td><td class="impact-s">88%</td><td class="impact-n">0%</td></tr>
+                            <tr><td><strong>Duplicates</strong></td><td class="impact-p">11%</td><td class="impact-s">67%</td><td class="impact-n">22%</td></tr>
+                        </tbody>
+                    </table>
+                </section>
+            </section>
+
+            <!-- Slide 9: Dataset Dependence -->
+            <section>
+                <section data-transition="fade">
+                    <h2>Dataset Dependence</h2>
+                    <h3 class="fragment center" style="color: #FF6B6B; font-size: 1.6em; margin-top: 20px;">Critical Insight</h3>
+                    
+                    <div class="box box-red fragment" style="margin-top: 25px; font-size: 1.1em;">
+                        <p><strong>Strongest Finding:</strong></p>
+                        <p style="font-size: 1.1em; margin-top: 12px;">Same error type behaves <span class="highlight">very differently</span> across datasets</p>
+                    </div>
+                    
+                    <svg viewBox="0 0 1100 350" width="1000" height="320" class="fragment" style="margin-top: 15px;">
+                        <text x="550" y="30" text-anchor="middle" fill="#FFE66D" font-size="24" font-weight="bold">Missing Values Impact by Dataset</text>
+                        
+                        <!-- USCensus -->
+                        <rect x="80" y="80" width="150" height="45" fill="#4ECDC4"/>
+                        <text x="155" y="110" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">86%</text>
+                        <text x="155" y="150" text-anchor="middle" fill="#fff" font-size="16">USCensus</text>
+                        
+                        <!-- Titanic -->
+                        <rect x="260" y="80" width="150" height="45" fill="#4ECDC4"/>
+                        <text x="335" y="110" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">65%</text>
+                        <text x="335" y="150" text-anchor="middle" fill="#fff" font-size="16">Titanic</text>
+                        
+                        <!-- Marketing -->
+                        <rect x="440" y="80" width="150" height="45" fill="#FFE66D"/>
+                        <text x="515" y="110" text-anchor="middle" fill="#333" font-size="22" font-weight="bold">49%</text>
+                        <text x="515" y="150" text-anchor="middle" fill="#fff" font-size="16">Marketing</text>
+                        
+                        <!-- Credit -->
+                        <rect x="620" y="80" width="150" height="45" fill="#FFE66D"/>
+                        <text x="695" y="110" text-anchor="middle" fill="#333" font-size="22" font-weight="bold">29%</text>
+                        <text x="695" y="150" text-anchor="middle" fill="#fff" font-size="16">Credit</text>
+                        
+                        <!-- Airbnb -->
+                        <rect x="800" y="80" width="150" height="45" fill="#95E1D3"/>
+                        <text x="875" y="110" text-anchor="middle" fill="#333" font-size="22" font-weight="bold">6%</text>
+                        <text x="875" y="150" text-anchor="middle" fill="#fff" font-size="16">Airbnb</text>
+                        
+                        <text x="550" y="190" text-anchor="middle" fill="#fff" font-size="18" font-style="italic">% Positive Impact</text>
+                        
+                        <!-- Range indicator -->
+                        <line x1="155" y1="230" x2="875" y2="230" stroke="#FF6B6B" stroke-width="4"/>
+                        <circle cx="155" cy="230" r="7" fill="#FF6B6B"/>
+                        <circle cx="875" cy="230" r="7" fill="#FF6B6B"/>
+                        <text x="550" y="270" text-anchor="middle" fill="#FF6B6B" font-size="24" font-weight="bold">6% to 86% variation!</text>
+                    </svg>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for implications</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Implication</h2>
+                    
+                    <div style="margin-top: 60px;">
+                        <div class="box box-red" style="font-size: 1.3em; margin-bottom: 30px;">
+                            <h3 style="margin-top: 0; color: var(--accent-color);">No Universal Solution</h3>
+                            <p>There is no "one-size-fits-all" cleaning strategy that works across all datasets</p>
+                        </div>
+                        
+                        <div class="box box-yellow" style="font-size: 1.3em; margin-bottom: 30px;">
+                            <h3 style="margin-top: 0; color: var(--secondary-color);">Validation is Essential</h3>
+                            <p>Validation-based decisions are <span class="highlight">critical</span> for determining whether to clean</p>
+                        </div>
+                        
+                        <div class="quote" style="font-size: 1.4em; margin-top: 50px;">
+                            "Dataset characteristics matter more than cleaning algorithms"
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 10: Decision Diagram -->
+            <section data-transition="fade">
+                <h2>When Should You Clean?</h2>
+                
+                <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
+                    <svg viewBox="0 0 1800 600" width="1700" height="550" style="margin: 0 auto;">
+                        <!-- Start -->
+                        <g class="fragment fade-in" data-fragment-index="0">
+                            <ellipse cx="80" cy="300" rx="70" ry="40" fill="#4ECDC4" stroke="#fff" stroke-width="3"/>
+                            <text x="80" y="308" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">START</text>
+                        </g>
+                        
+                        <!-- Arrow to Q1 -->
+                        <g class="fragment fade-in" data-fragment-index="1">
+                            <line x1="150" y1="300" x2="220" y2="300" stroke="#fff" stroke-width="3"/>
+                            <polygon points="225,300 220,297 220,303" fill="#fff"/>
+                        </g>
+                        
+                        <!-- Question 1 - BIGGER DIAMOND -->
+                        <g class="fragment fade-in" data-fragment-index="1">
+                            <path d="M 225 300 L 360 230 L 495 300 L 360 370 Z" fill="#FFE66D" stroke="#fff" stroke-width="3"/>
+                            <text x="360" y="290" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">Is error detectable</text>
+                            <text x="360" y="310" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">with high confidence?</text>
+                        </g>
+                        
+                        <!-- NO from Q1 to SKIP -->
+                        <g class="fragment fade-in" data-fragment-index="2">
+                            <line x1="360" y1="230" x2="360" y2="120" stroke="#FF6B6B" stroke-width="3"/>
+                            <polygon points="360,115 357,120 363,120" fill="#FF6B6B"/>
+                            <text x="385" y="175" text-anchor="start" fill="#FF6B6B" font-size="20" font-weight="bold">NO</text>
+                            <rect x="310" y="50" width="100" height="60" fill="#FF6B6B" stroke="#fff" stroke-width="3" rx="10"/>
+                            <text x="360" y="88" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">SKIP</text>
+                        </g>
+                        
+                        <!-- YES from Q1 to Q2 -->
+                        <g class="fragment fade-in" data-fragment-index="3">
+                            <line x1="495" y1="300" x2="600" y2="300" stroke="#4ECDC4" stroke-width="3"/>
+                            <polygon points="605,300 600,297 600,303" fill="#4ECDC4"/>
+                            <text x="545" y="285" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">YES</text>
+                        </g>
+                        
+                        <!-- Question 2 - BIGGER DIAMOND -->
+                        <g class="fragment fade-in" data-fragment-index="3">
+                            <path d="M 605 300 L 740 230 L 875 300 L 740 370 Z" fill="#FFE66D" stroke="#fff" stroke-width="3"/>
+                            <text x="740" y="290" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">Does validation</text>
+                            <text x="740" y="310" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">improve after cleaning?</text>
+                        </g>
+                        
+                        <!-- NO from Q2 to SKIP -->
+                        <g class="fragment fade-in" data-fragment-index="4">
+                            <line x1="740" y1="230" x2="740" y2="120" stroke="#FF6B6B" stroke-width="3"/>
+                            <polygon points="740,115 737,120 743,120" fill="#FF6B6B"/>
+                            <text x="765" y="175" text-anchor="start" fill="#FF6B6B" font-size="20" font-weight="bold">NO</text>
+                            <rect x="690" y="50" width="100" height="60" fill="#FF6B6B" stroke="#fff" stroke-width="3" rx="10"/>
+                            <text x="740" y="88" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">SKIP</text>
+                        </g>
+                        
+                        <!-- YES from Q2 to Q3 -->
+                        <g class="fragment fade-in" data-fragment-index="5">
+                            <line x1="875" y1="300" x2="980" y2="300" stroke="#4ECDC4" stroke-width="3"/>
+                            <polygon points="985,300 980,297 980,303" fill="#4ECDC4"/>
+                            <text x="925" y="285" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">YES</text>
+                        </g>
+                        
+                        <!-- Question 3 - BIGGER DIAMOND -->
+                        <g class="fragment fade-in" data-fragment-index="5">
+                            <path d="M 985 300 L 1120 230 L 1255 300 L 1120 370 Z" fill="#FFE66D" stroke="#fff" stroke-width="3"/>
+                            <text x="1120" y="290" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">Does model rely on</text>
+                            <text x="1120" y="310" text-anchor="middle" fill="#333" font-size="17" font-weight="bold">affected features?</text>
+                        </g>
+                        
+                        <!-- NO from Q3 to SKIP -->
+                        <g class="fragment fade-in" data-fragment-index="6">
+                            <line x1="1120" y1="230" x2="1120" y2="120" stroke="#FF6B6B" stroke-width="3"/>
+                            <polygon points="1120,115 1117,120 1123,120" fill="#FF6B6B"/>
+                            <text x="1145" y="175" text-anchor="start" fill="#FF6B6B" font-size="20" font-weight="bold">NO</text>
+                            <rect x="1070" y="50" width="100" height="60" fill="#FF6B6B" stroke="#fff" stroke-width="3" rx="10"/>
+                            <text x="1120" y="88" text-anchor="middle" fill="#fff" font-size="22" font-weight="bold">SKIP</text>
+                        </g>
+                        
+                        <!-- YES from Q3 to CLEAN -->
+                        <g class="fragment fade-in" data-fragment-index="7">
+                            <line x1="1255" y1="300" x2="1380" y2="300" stroke="#4ECDC4" stroke-width="3"/>
+                            <polygon points="1385,300 1380,297 1380,303" fill="#4ECDC4"/>
+                            <text x="1315" y="285" text-anchor="middle" fill="#4ECDC4" font-size="20" font-weight="bold">YES</text>
+                        </g>
+                        
+                        <!-- Final - CLEAN -->
+                        <g class="fragment fade-in" data-fragment-index="7">
+                            <rect x="1385" y="250" width="200" height="100" fill="#4ECDC4" stroke="#fff" stroke-width="4" rx="15"/>
+                            <text x="1485" y="310" text-anchor="middle" fill="#fff" font-size="32" font-weight="bold">CLEAN ✓</text>
+                        </g>
+                        
+                        <!-- Flow direction indicator -->
+                        <g class="fragment fade-in" data-fragment-index="8">
+                            <text x="900" y="480" text-anchor="middle" fill="#95E1D3" font-size="18" font-style="italic">Decision flows left → right</text>
+                            <line x1="650" y1="510" x2="1150" y2="510" stroke="#95E1D3" stroke-width="2" stroke-dasharray="5,5"/>
+                            <polygon points="1155,510 1150,507 1150,513" fill="#95E1D3"/>
+                        </g>
+                    </svg>
+                </div>
+                
+                <div class="box fragment" style="margin-top: 20px; font-size: 1.1em;">
+                    <strong>Message:</strong> Cleaning should be a <span class="highlight">validated decision</span>, not a reflex
+                </div>
+            </section>
+
+            <!-- Slide 11: CleanML vs. Robust ML -->
+            <section>
+                <section data-transition="fade">
+                    <h2>CleanML vs. Robust ML Approaches</h2>
+                    
+                    <div class="columns" style="margin-top: 50px;">
+                        <div class="box box-green">
+                            <h3 style="color: #4ECDC4; margin-top: 0; font-size: 1.2em;">Data Cleaning Approach</h3>
+                            <ul style="font-size: 1em; margin-top: 15px;">
+                                <li>Clean data first</li>
+                                <li>Use standard ML models</li>
+                                <li>Works for any error type</li>
+                                <li>Model-agnostic solution</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="box box-yellow">
+                            <h3 style="color: #FFE66D; margin-top: 0; font-size: 1.2em;">Robust ML Approach</h3>
+                            <ul style="font-size: 1em; margin-top: 15px;">
+                                <li>Keep dirty data</li>
+                                <li>Use specialized models</li>
+                                <li>Error-type specific</li>
+                                <li>Model-dependent solution</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 50px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for head-to-head comparison</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Head-to-Head Comparison</h2>
+                    
+                    <table style="margin-top: 50px; font-size: 0.95em;">
+                        <thead>
+                            <tr>
+                                <th>Error Type</th>
+                                <th>Robust ML Method</th>
+                                <th class="impact-p">Cleaning Wins</th>
+                                <th class="impact-s">Tie</th>
+                                <th class="impact-n">Robust Wins</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Missing Values</strong></td>
+                                <td>NaCL (Robust LR)</td>
+                                <td class="impact-p">83%</td>
+                                <td class="impact-s">0%</td>
+                                <td class="impact-n">17%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mislabels</strong></td>
+                                <td>Deep Learning (MLP)</td>
+                                <td class="impact-p">85%</td>
+                                <td class="impact-s">15%</td>
+                                <td class="impact-n">0%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Inconsistencies</strong></td>
+                                <td>Deep Learning (MLP)</td>
+                                <td class="impact-p">50%</td>
+                                <td class="impact-s">50%</td>
+                                <td class="impact-n">0%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Duplicates</strong></td>
+                                <td>Deep Learning (MLP)</td>
+                                <td class="impact-p">0%</td>
+                                <td class="impact-s">75%</td>
+                                <td class="impact-n">25%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 50px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for key finding</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <h2>Key Finding</h2>
+                    
+                    <div style="margin-top: 100px;">
+                        <div class="box box-green" style="font-size: 1.3em; padding: 40px;">
+                            <p><strong>Finding:</strong> Cleaning often <span class="highlight">outperforms</span> robust ML</p>
+                            <p style="margin-top: 25px;"><strong>Reason:</strong> Cleaned data works with ANY downstream model without modification</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Slide 12: Final Takeaways -->
+            <section>
+                <section data-transition="fade">
+                    <h2>Final Takeaways</h2>
+                    
+                    <div class="box box-red" style="margin-top: 20px;">
+                        <h3 style="color: #FF6B6B; margin-top: 0; font-size: 1.3em;">1. Cleaning Does Not Always Help</h3>
+                        <p style="font-size: 1em; margin-top: 10px;">Impact varies by error type, dataset, and cleaning method</p>
+                    </div>
+                    
+                    <div class="box box-green">
+                        <h3 style="color: #4ECDC4; margin-top: 0; font-size: 1.3em;">2. Simple Methods Are Often Sufficient</h3>
+                        <p style="font-size: 1em; margin-top: 10px;">HoloClean ≈ Mean Imputation in many cases</p>
+                    </div>
+                    
+                    <div class="box box-yellow">
+                        <h3 style="color: #FFE66D; margin-top: 0; font-size: 1.3em;">3. Duplicate Cleaning Is Risky</h3>
+                        <p style="font-size: 1em; margin-top: 10px;">22% negative impact due to false positives deleting valid data</p>
+                    </div>
+                    
+                    <div class="box box-success">
+                        <h3 style="color: #95E1D3; margin-top: 0; font-size: 1.3em;">4. Validate Cleaning Like a Hyperparameter</h3>
+                        <p style="font-size: 1em; margin-top: 10px;">Use validation set to select cleaning method + ML model</p>
+                    </div>
+                    
+                    <div style="margin-top: 40px; text-align: center;">
+                        <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for quiz</p>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; padding: 60px;">
+                        <h3 style="color: #FFE66D; font-size: 1.5em; text-align: center; margin-bottom: 30px;">Quick Quiz</h3>
+                        <div class="box box-yellow" style="font-size: 1em; max-width: 1200px;">
+                            <p style="font-size: 1.1em; text-align: center;"><strong>Q: Why Does the Same Error Break Some Models But Not Others?</strong></p>
+                            <p style="font-size: 1em; margin-top: 20px; color: #4ECDC4; border-left: 4px solid #4ECDC4; padding-left: 15px;">
+                                <strong>A:</strong> Dataset dependence is the strongest finding we discovered. The same type of data error can have wildly different effects depending on your dataset, as we saw variations ranging from just 6% to as high as 86% impact! This shows that the context and characteristics of your specific dataset matter much more than the cleaning algorithm you choose. It's like how the same medicine affects different people differently.
+                            </p>
+                        </div>
+                        
+                        <div style="margin-top: 50px; text-align: center;">
+                            <p style="font-size: 0.9em; color: var(--secondary-color);">↓ Press down for final slide</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <section data-transition="fade">
+                    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%; text-align: center;">
+                        <h2 style="color: #4ECDC4; font-size: 2.5em;">Thank You!</h2>
+                        <p style="font-size: 1.6em; margin-top: 30px;">Questions?</p>
+                        <p style="font-size: 1.3em; margin-top: 20px; color: var(--success-color);">Presented by: Bhargav Limbasia</p>
+                    </div>
+                </section>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            slideNumber: 'c/t',
+            controls: true,
+            progress: true,
+            center: false,
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            minScale: 0.2,
+            maxScale: 1.5,
+            controlsLayout: 'bottom-right',
+            controlsBackArrows: 'faded'
+        });
+    </script>
+</body>
+</html>
